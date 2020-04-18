@@ -5,53 +5,94 @@
 $(document).ready(function() {
   $('.quantity .increment').on('click', function() {
 
+    console.log("hello");
     let count = $(this).siblings("input");
     let n = Number(count.val());
     n += 1;
     count.val(n);
 
-    $('.subtotal').text(parseInt($('.subtotal').text()) + parseInt($(this).parent().siblings(".price").text()));
+    //below code is for dynamically present the price changes when user hit plus button
+    let subTotalOnScreenLocation = $(".order-calculations").children("p")[0];
+    subTotalOnScreenLocation.innerText = "Subtotal:";
+    let taxesOnScreenValueLocation = $(".order-calculations").children("p")[1];
+    taxesOnScreenValueLocation.innerText = "Taxes:";
+    let totalOnScreenValueLocation = $(".order-calculations").children("p")[2];
+    totalOnScreenValueLocation.innerText = "Total:";
+    //iterate the HTML with all divs named "food-item"
+    let total = 0;
+    $("section.order-food-interface div.food-item").each((index, element) => {
+      let price = Number($(element).children(".price").text());
+      console.log(price);
+      let quantity = Number($(element).find("input").val());
+      let singleTotal = price * quantity;
+      total = total + singleTotal;
+    });
+    let tax = (total * 0.13).toFixed(2);
+    let totalWithTax = (Number(total) + Number(tax)).toFixed(2);
+    console.log(totalWithTax);
 
+    let subTotalOnScreenValue = $(".order-calculations").children("p")[0].innerText;
+    subTotalOnScreenLocation.innerText = subTotalOnScreenValue + " $" + total;
 
-    $('.taxes').text(Math.round($('.subtotal').text() * 0.13 * 100) / 100);
+    let taxesOnScreenValue = $(".order-calculations").children("p")[1].innerText;
+    taxesOnScreenValueLocation.innerText = taxesOnScreenValue + " $" + tax;
 
-    $('.total').text(parseInt($('.subtotal').text()) + (Math.round($('.subtotal').text() * 0.13 * 100) / 100))
-
-    //need to create an object to populate the popup box WARNING WARNING WARNING
-
+    let totalOnScreenValue = $(".order-calculations").children("p")[2].innerText;
+    totalOnScreenValueLocation.innerText = totalOnScreenValue + " $" + totalWithTax;
   });
 
   $('.quantity .decrement').on('click', function() {
-    let count = $(this).siblings("input");
+    let count = $(this).parent().children("input");
+    //Alter the NaN amount into 0
     let n = Number(count.val());
-    if (n > 0)  {
     n -= 1;
-    count.val(n)
+    if (n < 0) {
+      n = 0;
+    }
+    count.val(n);
 
+    //below code is for dynamically present the price changes when user hit plus button
+    let subTotalOnScreenLocation = $(".order-calculations").children("p")[0];
+    subTotalOnScreenLocation.innerText = "Subtotal:";
+    let taxesOnScreenValueLocation = $(".order-calculations").children("p")[1];
+    taxesOnScreenValueLocation.innerText = "Taxes:";
+    let totalOnScreenValueLocation = $(".order-calculations").children("p")[2];
+    totalOnScreenValueLocation.innerText = "Total:";
+    //iterate the HTML with all divs named "food-item"
+    let total = 0;
+    $("section.order-food-interface div.food-item").each((index, element) => {
+      let price = Number($(element).children(".price").text());
+      let quantity = Number($(element).find("input").val());
+      let singleTotal = price * quantity;
+      total = total + singleTotal;
+    });
+    let tax = (total * 0.13).toFixed(2);
+    let totalWithTax = (Number(total) + Number(tax)).toFixed(2);
 
-    $('.subtotal').text(parseInt($('.subtotal').text()) - parseInt($(this).parent().siblings(".price").text()));
+    let subTotalOnScreenValue = $(".order-calculations").children("p")[0].innerText;
+    subTotalOnScreenLocation.innerText = subTotalOnScreenValue + " $" + total;
 
-    $('.taxes').text(Math.round($('.subtotal').text() * 0.13 * 100) / 100);
+    let taxesOnScreenValue = $(".order-calculations").children("p")[1].innerText;
+    taxesOnScreenValueLocation.innerText = taxesOnScreenValue + " $" + tax;
 
-    $('.total').text(parseInt($('.subtotal').text()) + (Math.round($('.subtotal').text() * 0.13 * 100) / 100))
-  }
-
+    let totalOnScreenValue = $(".order-calculations").children("p")[2].innerText;
+    totalOnScreenValueLocation.innerText = totalOnScreenValue + " $" + totalWithTax;
   });
 
 
-  $('.quantity input').on('input', function() {
+  // $('.quantity input').on('input', function() {
 
-    let price = 0;
+  //   let price = 0;
 
-    $(".price").each(function(index)  {
-      price += parseInt($(this).text()) * parseInt($(this).siblings(".quantity").children("input").val());
-    })
+  //   $(".price").each(function(index)  {
+  //     price += parseInt($(this).text()) * parseInt($(this).siblings(".quantity").children("input").val());
+  //   })
 
 
-    $(".subtotal").text(price);
-    $(".taxes").text(price * 0.13)
-    $(".total").text(parseInt($(".subtotal").text()) + parseInt($(".taxes").text()))
-  })
+  //   $(".subtotal").text(price);
+  //   $(".taxes").text(price * 0.13)
+  //   $(".total").text(parseInt($(".subtotal").text()) + parseInt($(".taxes").text()))
+  // })
 
 
 
