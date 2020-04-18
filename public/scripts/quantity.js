@@ -79,6 +79,42 @@ $(document).ready(function() {
     totalOnScreenValueLocation.innerText = totalOnScreenValue + " $" + totalWithTax;
   });
 
+  $("section.order-food-interface div.food-item div.quantity input").on('keyup', function() {
+    let inputValue = $(this).val();
+    if (!Number.isInteger(Number(inputValue))) {
+      alert("Please input a integer amount for food quantities!")
+    }
+    // inputValue = Number(inputValue);
+    // console.log(inputValue);
+
+    //below code is for dynamically present the price changes when user hit plus button
+    let subTotalOnScreenLocation = $(".order-calculations").children("p")[0];
+    subTotalOnScreenLocation.innerText = "Subtotal:";
+    let taxesOnScreenValueLocation = $(".order-calculations").children("p")[1];
+    taxesOnScreenValueLocation.innerText = "Taxes:";
+    let totalOnScreenValueLocation = $(".order-calculations").children("p")[2];
+    totalOnScreenValueLocation.innerText = "Total:";
+    //iterate the HTML with all divs named "food-item"
+    let total = 0;
+    $("section.order-food-interface div.food-item").each((index, element) => {
+      let price = Number($(element).children(".price").text());
+      let quantity = Number($(element).find("input").val());
+      let singleTotal = price * quantity;
+      total = total + singleTotal;
+    });
+    let tax = (total * 0.13).toFixed(2);
+    let totalWithTax = (Number(total) + Number(tax)).toFixed(2);
+
+    let subTotalOnScreenValue = $(".order-calculations").children("p")[0].innerText;
+    subTotalOnScreenLocation.innerText = subTotalOnScreenValue + " $" + total;
+
+    let taxesOnScreenValue = $(".order-calculations").children("p")[1].innerText;
+    taxesOnScreenValueLocation.innerText = taxesOnScreenValue + " $" + tax;
+
+    let totalOnScreenValue = $(".order-calculations").children("p")[2].innerText;
+    totalOnScreenValueLocation.innerText = totalOnScreenValue + " $" + totalWithTax;
+  });
+
 
   // $('.quantity input').on('input', function() {
 
