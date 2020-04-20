@@ -1,6 +1,11 @@
+
+// event handler that counts user input displays
+// how many remaining characters are left to be used
+
 $(document).ready(function() {
   $('.quantity .increment').on('click', function() {
 
+    // console.log("hello");
     let count = $(this).siblings("input");
     let n = Number(count.val());
     n += 1;
@@ -24,6 +29,7 @@ $(document).ready(function() {
     });
     let tax = (total * 0.13).toFixed(2);
     let totalWithTax = (Number(total) + Number(tax)).toFixed(2);
+    // console.log(totalWithTax);
 
     let subTotalOnScreenValue = $(".order-calculations").children("p")[0].innerText;
     subTotalOnScreenLocation.innerText = subTotalOnScreenValue + " $" + total;
@@ -37,6 +43,7 @@ $(document).ready(function() {
 
   $('.quantity .decrement').on('click', function() {
     let count = $(this).parent().children("input");
+    //Alter the NaN amount into 0
     let n = Number(count.val());
     n -= 1;
     if (n < 0) {
@@ -105,6 +112,23 @@ $(document).ready(function() {
     let totalOnScreenValue = $(".order-calculations").children("p")[2].innerText;
     totalOnScreenValueLocation.innerText = totalOnScreenValue + " $" + totalWithTax;
   });
+
+
+  // $('.quantity input').on('input', function() {
+
+  //   let price = 0;
+
+  //   $(".price").each(function(index)  {
+  //     price += parseInt($(this).text()) * parseInt($(this).siblings(".quantity").children("input").val());
+  //   })
+
+
+  //   $(".subtotal").text(price);
+  //   $(".taxes").text(price * 0.13)
+  //   $(".total").text(parseInt($(".subtotal").text()) + parseInt($(".taxes").text()))
+  // })
+
+
 
   $(".checkout-button").on("click", function(event) {
     // Now user has clicked sumbit so we need to retrieve values from Cart
@@ -208,5 +232,15 @@ $(document).ready(function() {
       }).then(() => {
       })
     }
+
   })
+
 })
+
+
+
+
+
+
+
+
