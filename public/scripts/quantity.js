@@ -5,7 +5,7 @@
 $(document).ready(function() {
   $('.quantity .increment').on('click', function() {
 
-    console.log("hello");
+    // console.log("hello");
     let count = $(this).siblings("input");
     let n = Number(count.val());
     n += 1;
@@ -22,14 +22,14 @@ $(document).ready(function() {
     let total = 0;
     $("section.order-food-interface div.food-item").each((index, element) => {
       let price = Number($(element).children(".price").text());
-      console.log(price);
+      // console.log(price);
       let quantity = Number($(element).find("input").val());
       let singleTotal = price * quantity;
       total = total + singleTotal;
     });
     let tax = (total * 0.13).toFixed(2);
     let totalWithTax = (Number(total) + Number(tax)).toFixed(2);
-    console.log(totalWithTax);
+    // console.log(totalWithTax);
 
     let subTotalOnScreenValue = $(".order-calculations").children("p")[0].innerText;
     subTotalOnScreenLocation.innerText = subTotalOnScreenValue + " $" + total;
@@ -84,8 +84,6 @@ $(document).ready(function() {
     if (!Number.isInteger(Number(inputValue))) {
       alert("Please input a integer amount for food quantities!")
     }
-    // inputValue = Number(inputValue);
-    // console.log(inputValue);
 
     //below code is for dynamically present the price changes when user hit plus button
     let subTotalOnScreenLocation = $(".order-calculations").children("p")[0];
@@ -147,10 +145,29 @@ $(document).ready(function() {
       }
     })
     console.log(foodNameArray);
-    foodObject["subtotal"] = $(".subtotal").text()
-    foodObject["taxes"] = $(".taxes").text()
-    foodObject["total"] = $(".total").text()
+
+    let subTotalOnScreenLocation = $(".order-calculations").children("p")[0];
+    subTotalOnScreenLocation.innerText = "Subtotal:";
+    let taxesOnScreenValueLocation = $(".order-calculations").children("p")[1];
+    taxesOnScreenValueLocation.innerText = "Taxes:";
+    let totalOnScreenValueLocation = $(".order-calculations").children("p")[2];
+    totalOnScreenValueLocation.innerText = "Total:";
+    //iterate the HTML with all divs named "food-item"
+    let total = 0;
+    $("section.order-food-interface div.food-item").each((index, element) => {
+      let price = Number($(element).children(".price").text());
+      let quantity = Number($(element).find("input").val());
+      let singleTotal = price * quantity;
+      total = total + singleTotal;
+    });
+    let tax = (total * 0.13).toFixed(2);
+    let totalWithTax = (Number(total) + Number(tax)).toFixed(2);
+
+    foodObject["subtotal"] = total;
+    foodObject["taxes"] = tax;
+    foodObject["total"] = totalWithTax;
     foodObject["orderedItems"] = foodNameArray;
+    console.log(foodObject);
 
     foodNameArray.forEach(function(elements)  {
       $(".order-details").text($(".order-details").text() + " " + foodObject[elements] + " " + elements + " / ")
@@ -169,6 +186,8 @@ $(document).ready(function() {
 
   $(".confirm").on("click", function(event) {
 
+
+
     const foodObject = {}
     const foodNameArray = [];
     $(".food-name").each(function(index)  {
@@ -178,14 +197,34 @@ $(document).ready(function() {
       }
     })
     console.log(foodNameArray);
-    foodObject["subtotal"] = $(".subtotal").text()
-    foodObject["taxes"] = $(".taxes").text()
-    foodObject["total"] = $(".total").text()
+
+    let subTotalOnScreenLocation = $(".order-calculations").children("p")[0];
+    subTotalOnScreenLocation.innerText = "Subtotal:";
+    let taxesOnScreenValueLocation = $(".order-calculations").children("p")[1];
+    taxesOnScreenValueLocation.innerText = "Taxes:";
+    let totalOnScreenValueLocation = $(".order-calculations").children("p")[2];
+    totalOnScreenValueLocation.innerText = "Total:";
+    //iterate the HTML with all divs named "food-item"
+    let total = 0;
+    $("section.order-food-interface div.food-item").each((index, element) => {
+      let price = Number($(element).children(".price").text());
+      let quantity = Number($(element).find("input").val());
+      let singleTotal = price * quantity;
+      total = total + singleTotal;
+    });
+    let tax = (total * 0.13).toFixed(2);
+    let totalWithTax = (Number(total) + Number(tax)).toFixed(2);
+
+    foodObject["subtotal"] = total.toString();
+    foodObject["taxes"] = tax;
+    foodObject["total"] = totalWithTax;
     foodObject["orderedItems"] = foodNameArray;
     foodObject["name"] = $(".name").val()
     foodObject["phone"] = $(".phone").val()
 
-    if(parseInt($(".total").text()) > 0)  {
+    console.log(foodObject);
+
+    if(totalWithTax > 0)  {
       $.ajax({
         url:"http://localhost:8080/order",
         method: "POST",
