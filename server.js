@@ -104,7 +104,7 @@ app.get("/about", (req, res) => {
 
 app.post("/order", (req, res) => {
   // console.log(req)
-  // console.log(req.body)
+  console.log(req.body)
   let foodNameArray = req.body.orderedItems;
   console.log(foodNameArray);
 
